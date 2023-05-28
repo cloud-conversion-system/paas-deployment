@@ -25,49 +25,24 @@ Una vez la instancia se haya creado, reemplace la IP de la base de datos conteni
 
 Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que las instancias pueda acceder a él. En los containers del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
 
-### Creación de plantillas de instancia para la ejecución de la aplicación.
+### Configuración del Secret Manager
+Recuerde crear un secret con las credenciales de autenticación en formato JSON, para que los contendores puedan utilizar servicios, como por ejemplo Cloud Storage.
 
-- Selecciona máquinas de tipo N1 f1-micro.
-- Disco de arranque Container-Optimized OS.
-- Etiqueta de red http-server para permitir conexiones por el puerto 80.
-- Añada una imagen de contenedor a la plantilla con la siguiente información:
-    - En la imagen del contenedor coloque: `ghcr.io/cloud-conversion-system/scalable-cloud-app:main`
-    - Agregue un volumen de tipo Directorio, en la ruta de activación ponga ```/app/credentials/``` como Ruta de activación y ```/var/credentials/``` como Ruta de acceso del host en Modo Lectura.
-- Añade lo siguiente a automatización en "secuencia de comandos de inicio":
+### Configuración de Pub/Sub
+En primer lugar, se debe crear un tópico al que llegaran eventos con el nombre de "file_system_notification". Luego de esto, asocie una subsripción, llamada "worker_subscription" de tipo push hacia el endpoint del worker que más tarde configurará en Cloud Run.
 
-    ```
-    #!bin/bash
-    sudo mkdir /var/credentials/
-    sudo rm /var/credentials/google-credentials.json
-    sudo touch /var/credentials/google-credentials.json
-    echo '<GOOGLE_CREDENTIALS>' | sudo tee -a /var/credentials/google-credentials.json
-    ```
-
-- Habilitar monitoring y logging
-
-Por último, se deben repetir los anteriores pasos para la plantilla de instancia del worker, con la única diferencia de que la imagen del contenedor es la siguiente: `ghcr.io/cloud-conversion-system/scalable-cloud-app-worker:main`.
-
-## Crear un grupo de instancias a partir de la plantilla
-
-Después de haber creado las plantillas de instancia para la ejecución de la aplicación y el worker en GCP, se puede crear su grupo de instancias a partir de dicha plantilla.
-
-Para crear el grupo de instancias, sigue los siguientes pasos:
-
-1. En el menú de navegación, selecciona "Instancias de grupo de instancias".
-2. Haz clic en "Crear un grupo de instancias".
-3. Completa los campos requeridos, como el nombre del grupo de instancias y la cantidad de instancias que deseas crear.
-4. En el campo "Plantilla de instancia", selecciona la plantilla que creaste anteriormente.
-5. Configura el resto de los campos según tus necesidades.
-6. Haz clic en "Crear".
-
-Una vez que el grupo de instancias se haya creado, podrás acceder a él desde el menú de navegación y administrarlo según tus necesidades.
+### Creación de servicios en Cloud Run
+1. En Cloud Run, seleccione "Create Service".
+2. Seleccione la opción "Continuously deploy new revisions from a source repository", y siga los pasos para conectar un repositorio con Google Cloud Build. Esto creará un trigger que actualizará automáticamente los contenedores del servico.
+3. Configure reglas de autoscaling, capacidad y puertos.
+4. Añada un secret que enlace el creado para las credenciales. Debe estar montado como volumen en `/app/credentials/`, con el nombre de `google-credentials.json`.
+5. Opcionalmente, podrá crear un health check del servicio.
+6. Cree una conexión a la base de datos en Cloud SQL.
 
 ## Documentación del API
-
 [Postman Documentation](https://documenter.getpostman.com/view/11708390/2s93Y5NeWB)
 
 ## License
-
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](LICENSE)**
