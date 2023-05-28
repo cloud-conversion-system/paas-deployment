@@ -11,7 +11,7 @@ from flask import Flask
 
 app = Flask(__name__)
 engine = create_engine(
-    'postgresql://postgres:password@10.91.16.3/cloud_conversion_tool')
+    'postgresql://postgres:password@104.198.61.85/cloud_conversion_tool')
 db_session = scoped_session(
     sessionmaker(
         autocommit=False,
