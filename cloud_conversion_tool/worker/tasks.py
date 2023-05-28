@@ -2,21 +2,16 @@ import zipfile
 import py7zr
 import tarfile
 import os
-import time
-
-
 from cloud_conversion_tool.modelos.modelos import Task, TaskSchema, Status
 from ..cloud_bucket_access import gcsManager
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from flask import Flask
 
-from google.cloud import pubsub_v1
-
+app = Flask(__name__)
 engine = create_engine(
-    'postgresql://postgres:password@10.91.16.3/cloud_conversion_tool'
-)
+    'postgresql://postgres:password@10.91.16.3/cloud_conversion_tool')
 db_session = scoped_session(
     sessionmaker(
         autocommit=False,
@@ -28,47 +23,14 @@ task_schema = TaskSchema()
 UPLOAD_FOLDER = '/python-docker/cloud_conversion_tool/files/'
 
 
-def main():
-    consuming = True
-
-    # Credentials and pub/sub instantiation
-    credentials_json = '/app/credentials/google-credentials.json'
-    subscriber = pubsub_v1.SubscriberClient.from_service_account_file(
-        credentials_json
-    )
-
-    # Processes performed when a message is received
-    def callback(message):
-        print(f"Received message: {message}")
-        # The message will be the file name
-        check_database(message.data.decode("utf-8"))
-        message.ack()
-
-    subscription_path = subscriber.subscription_path(
-        'cloud-conversion-system',
-        'worker_suscription',
-    )
-    subscriber.subscribe(subscription_path, callback=callback)
-
-    # Starts the message receiving loop
-    while consuming:
-        try:
-            time.sleep(1)
-        except KeyboardInterrupt:
-            print("Keyboard interrupt detected. Stopping subscriber...")
-            subscriber.stop()
-            break
-        except Exception as e:
-            print(f"An error occurred: {e}. Stopping subscriber...")
-            subscriber.stop()
-            break
+@app.route('/process-tasks', methods=['POST'])
+def handle_pubsub_message():
+    check_database()
+    return "Message processed successfully"
 
 
-def check_database(message):
-    message_file_id = int(message)
-    task = db_session.query(Task).filter_by(id=message_file_id).all()[0]
-    compress_file(task.file_name, task.new_format, task.id)
-    # Verify pending tasks
+def check_database():
+    # Process pending tasks
     tasks = db_session.query(Task).filter_by(status=Status.UPLOADED).all()
     for task in tasks:
         compress_file(task.file_name, task.new_format, task.id)
@@ -118,5 +80,5 @@ def update_task(task_id):
     task_schema.dump(task)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run()
