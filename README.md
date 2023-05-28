@@ -1,12 +1,12 @@
-# Scalable Cloud
+# PaaS Deployment
 
-REST Backend + Asynchronous Processing Layer. Design and implementation of a scalable web application in public cloud.
+REST Backend + Asynchronous Processing Layer. Design and implementation of a PaaS web application in public cloud.
 
 This application allows compressing files using different utilities and/or algorithms: ZIP, 7Z, TAR.GZ, TAR.BZ2
 
 ## Video Explicativo
 
-[YouTube Link](https://youtu.be/b2djxf8pJqo)
+TODO: [YouTube Link]()
 
 ## ¿Cómo desplegar la aplicación en GCP?
 
@@ -23,9 +23,7 @@ Una vez la instancia se haya creado, reemplace la IP de la base de datos conteni
 
 ### Despliegue del sistema de Cloud Storage
 
-Para el despliegue del sistema de archivos de red, se ha actualizado la solución para utilizar Cloud Storage en lugar de NFS.
-
-Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que la instancia pueda acceder a él. En las VM del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
+Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que las instancias pueda acceder a él. En los containers del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
 
 ### Creación de plantillas de instancia para la ejecución de la aplicación.
 
@@ -63,19 +61,6 @@ Para crear el grupo de instancias, sigue los siguientes pasos:
 6. Haz clic en "Crear".
 
 Una vez que el grupo de instancias se haya creado, podrás acceder a él desde el menú de navegación y administrarlo según tus necesidades.
-
-## Crear un balanceador de carga
-
-Para crear un balanceador de carga en GCP, sigue los siguientes pasos:
-
-1. En el menú de navegación, selecciona "Balanceador de carga".
-2. Haz clic en "Crear balanceador de carga".
-3. Selecciona "Balanceador de carga HTTP(S)".
-4. Configura el resto de los campos según tus necesidades.
-5. En la sección "Grupo de instancias", selecciona el grupo de instancias que creaste anteriormente.
-6. Haz clic en "Crear".
-
-Una vez que el balanceador de carga se haya creado, podrás acceder a él desde el menú de navegación y administrarlo según tus necesidades. Asegúrate de configurar las reglas de enrutamiento y los servicios de back-end adecuados para que el balanceador de carga funcione correctamente.
 
 ## Documentación del API
 
