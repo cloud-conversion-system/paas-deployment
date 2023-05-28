@@ -32,6 +32,7 @@ Recuerde crear un secret con las credenciales de autenticación en formato JSON,
 En primer lugar, se debe crear un tópico al que llegaran eventos con el nombre de "file_system_notification". Luego de esto, asocie una subsripción, llamada "worker_subscription" de tipo push hacia el endpoint del worker que más tarde configurará en Cloud Run.
 
 ### Creación de servicios en Cloud Run
+Realice estos pasos para los dos archivos de Dockerfile de este repositorio:
 1. En Cloud Run, seleccione "Create Service".
 2. Seleccione la opción "Continuously deploy new revisions from a source repository", y siga los pasos para conectar un repositorio con Google Cloud Build. Esto creará un trigger que actualizará automáticamente los contenedores del servico.
 3. Configure reglas de autoscaling, capacidad y puertos.
