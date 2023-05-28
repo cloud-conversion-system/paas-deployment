@@ -19,7 +19,7 @@ Verifique que la maquina pertenezca a la misma VPC que las demás maquinas despl
 
 Luego de haber chequeado la opción, en caso de que su proyecto no tenga activadas las APIs necesarias, GCP lo redirigirá a un tutorial para activarlas y asignar correctamente esa IP privada a la VPC correspondiente.
 
-Una vez la instancia se haya creado, reemplace la IP de la base de datos contenida en los archivos `worker_pubsub/tasks` y `__init__.py`. Solo debe reemplazar la parte contenida después del @ y antes del /.
+Una vez la instancia se haya creado, reemplace la IP pública de la base de datos contenida en los archivos `worker/app` y `__init__.py`. Solo debe reemplazar la parte contenida después del @ y antes del /.
 
 ### Despliegue del sistema de Cloud Storage
 
