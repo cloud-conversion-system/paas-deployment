@@ -26,7 +26,7 @@ Una vez la instancia se haya creado, reemplace la IP de la base de datos conteni
 Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que las instancias pueda acceder a él. En los containers del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
 
 ### Configuración del Secret Manager
-Recuerde crear un secret con las credenciales de autenticación en formato JSON, para que los contendores puedan utilizar servicios, como por ejemplo Cloud Storage.
+Recuerde crear un secret con las credenciales de autenticación en formato JSON, para que los contenedores puedan utilizar servicios, como por ejemplo Cloud Storage.
 
 ### Configuración de Pub/Sub
 En primer lugar, se debe crear un tópico al que llegaran eventos con el nombre de "file_system_notification". Luego de esto, asocie una subsripción, llamada "worker_subscription" de tipo push hacia el endpoint del worker que más tarde configurará en Cloud Run.
