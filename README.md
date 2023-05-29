@@ -6,7 +6,7 @@ This application allows compressing files using different utilities and/or algor
 
 ## Video Explicativo
 
-TODO: [YouTube Link]()
+[YouTube Link](https://youtu.be/U7XDnbvI4j4)
 
 ## ¿Cómo desplegar la aplicación en GCP?
 
