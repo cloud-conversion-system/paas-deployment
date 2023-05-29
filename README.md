@@ -23,7 +23,7 @@ Una vez la instancia se haya creado, reemplace la IP pública de la base de dato
 
 ### Despliegue del sistema de Cloud Storage
 
-Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que las instancias pueda acceder a él. En los containers del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
+Para comenzar, se creó un bucket en Cloud Storage y se otorgaron los permisos necesarios para que las instancias puedan acceder a él. En los containers del worker y de la aplicación, se configuraron un par de parámetros adicionales para realizar la conexión con el bucket de Cloud Storage.
 
 ### Configuración del Secret Manager
 Recuerde crear un secret con las credenciales de autenticación en formato JSON, para que los contenedores puedan utilizar servicios, como por ejemplo Cloud Storage.
